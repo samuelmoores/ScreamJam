@@ -48,7 +48,6 @@ public class PlayerFight : MonoBehaviour
 
         if (state == PlayerFightState.ATTACKING && attackCooldown > 0)
         {
-            Debug.Log(attackCooldown);
             attackCooldown -= Time.deltaTime;
         }
         else
@@ -60,7 +59,6 @@ public class PlayerFight : MonoBehaviour
 
     public void SetEnemy(Enemy enemyToAttack)
     {
-        Debug.Log("enemy set to" + enemyToAttack);
         enemy = enemyToAttack;
     }
 

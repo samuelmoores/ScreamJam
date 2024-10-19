@@ -6,11 +6,13 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    public int nextScene;
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(1);
+             SceneManager.LoadScene(nextScene);
+
         }
     }
 }

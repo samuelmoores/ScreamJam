@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Enemy : MonoBehaviour
     public Transform itemDrop;
     Animator animator;
     PlayerFight player;
+    GameManager manager;
     float health;
     bool isStunned;
 
@@ -16,6 +18,7 @@ public class Enemy : MonoBehaviour
     {
         player = GameObject.Find("Player").GetComponent<PlayerFight>();
         animator = GetComponent<Animator>();
+        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         health = 1.0f;
     }
 
@@ -27,7 +30,7 @@ public class Enemy : MonoBehaviour
 
     public void Damage()
     {
-        health -= 0.55f;
+        health -= 1.55f;
         
         if(health <= 0.0f)
         {
@@ -55,10 +58,10 @@ public class Enemy : MonoBehaviour
 
     public void Destroy()
     {
-        GameObject.Find("Player").GetComponent<PlayerController>().enabled = true;
-
-        GameObject.Find("Player").GetComponent<PlayerController>().SetState(PlayerController.PlayerState.MOVING);
+        manager.numOfEnemies--;
         Instantiate(item, itemDrop.position, Quaternion.identity);
         Object.Destroy(gameObject);
     }
+
+    
 }
