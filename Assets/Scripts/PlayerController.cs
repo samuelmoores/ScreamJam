@@ -12,14 +12,12 @@ public class PlayerController : MonoBehaviour
     private bool groundedPlayer;
     private float playerSpeed = 5.0f;
     private float gravityValue = -9.81f;
-    bool hasItem;
 
     private void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         state = PlayerState.MOVING;
-        hasItem = false;
     }
 
     void Update()
@@ -58,7 +56,6 @@ public class PlayerController : MonoBehaviour
     {
         if(other.CompareTag("Item"))
         {
-            Debug.Log("hasItem");
         }
     }
 }

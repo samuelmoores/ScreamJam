@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public GameObject item;
+    public Transform itemDrop;
     Animator animator;
     PlayerFight player;
     float health;
@@ -42,14 +43,6 @@ public class Enemy : MonoBehaviour
 
     }
 
-    public void OnAttack()
-    {
-        if (!isStunned)
-        {
-            animator.SetTrigger("attack");
-        }
-    }
-
     public void Attack()
     {
         player.Damage();
@@ -65,7 +58,7 @@ public class Enemy : MonoBehaviour
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = true;
 
         GameObject.Find("Player").GetComponent<PlayerController>().SetState(PlayerController.PlayerState.MOVING);
-        Instantiate(item);
+        Instantiate(item, itemDrop.position, Quaternion.identity);
         Object.Destroy(gameObject);
     }
 }

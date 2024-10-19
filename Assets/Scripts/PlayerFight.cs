@@ -15,16 +15,40 @@ public class PlayerFight : MonoBehaviour
     {
         state = PlayerFightState.IDLE;
         animator = GetComponent<Animator>();
-        enemy = GameObject.Find("Zombie").GetComponent<Enemy>();
         health = 1.0f;
         GetComponent<PlayerController>().enabled = false;
         attackCooldown = 3.0f;
+        enemy = null;
     }
     private void Update()
     {
-        Debug.Log(attackCooldown);
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Create a ray from the camera to the mouse position
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            
+            // Check if the ray hits an object
+            if (Physics.Raycast(ray, out hit))
+            {
+                // Check if the hit object is tagged as "Enemy"
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    // Get the Enemy component from the hit object
+                    Enemy enemy = hit.collider.GetComponent<Enemy>();
+
+                    // If the enemy is not null, call the SetEnemy function
+                    if (enemy != null)
+                    {
+                        SetEnemy(enemy);
+                    }
+                }
+            }
+        }
+
         if (state == PlayerFightState.ATTACKING && attackCooldown > 0)
         {
+            Debug.Log(attackCooldown);
             attackCooldown -= Time.deltaTime;
         }
         else
@@ -33,9 +57,16 @@ public class PlayerFight : MonoBehaviour
             attackCooldown = 3.0f;
         }
     }
+
+    public void SetEnemy(Enemy enemyToAttack)
+    {
+        Debug.Log("enemy set to" + enemyToAttack);
+        enemy = enemyToAttack;
+    }
+
     public void OnAttack()
     {
-        if(state == PlayerFightState.IDLE)
+        if(state == PlayerFightState.IDLE && enemy != null)
         {
             state = PlayerFightState.ATTACKING;
             animator.SetTrigger("punch");
@@ -46,6 +77,7 @@ public class PlayerFight : MonoBehaviour
     {
         enemy.Damage();
         state = PlayerFightState.ATTACKING;
+        enemy = null;
     }
 
     public void Damage()

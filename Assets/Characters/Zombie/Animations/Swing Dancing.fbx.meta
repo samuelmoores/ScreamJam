@@ -57,7 +57,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.89713234
+      - time: 1
         functionName: Destroy
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 4fb141a41977a8f45a431bd396d96aeb, type: 3}
