@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyRun : MonoBehaviour
 {
+    public GameObject TimerGameObject;
+    ChaseTimer chaseTimer;
     NavMeshAgent agent;
     Animator animator;
 
@@ -13,6 +16,7 @@ public class EnemyRun : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        chaseTimer = TimerGameObject.GetComponent<ChaseTimer>();
     }
 
     // Update is called once per frame
@@ -25,6 +29,10 @@ public class EnemyRun : MonoBehaviour
             agent.destination = new Vector3(Random.Range(-40, 40), transform.position.y, Random.Range(-40, 40));
 
         }
+        else if(chaseTimer.GetTime() <= 0.0f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,6 +41,7 @@ public class EnemyRun : MonoBehaviour
         {
             agent.isStopped = true;
             animator.SetBool("isCaught", true);
+            chaseTimer.RemoveEnemy();
         }
     }
 }
