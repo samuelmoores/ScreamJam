@@ -9,6 +9,7 @@ public class PlayerFight : MonoBehaviour
     public GameObject Explosion;
     public GameObject AttackMenu;
     public GameObject FightMenu;
+    public GameObject ErrorMessage;
 
     Animator animator;
     Enemy enemy;
@@ -24,6 +25,7 @@ public class PlayerFight : MonoBehaviour
         attackCooldown = 3.0f;
         enemy = null;
         AttackMenu.SetActive(false);
+        ErrorMessage.SetActive(false);
 
     }
     private void Update()
@@ -72,6 +74,8 @@ public class PlayerFight : MonoBehaviour
     {
         enemy = enemyToAttack;
         enemy.Select();
+        ErrorMessage.SetActive(false);
+
     }
 
     public void OnAttack()
@@ -80,6 +84,11 @@ public class PlayerFight : MonoBehaviour
         {
             state = PlayerFightState.ATTACKING;
             animator.SetTrigger("punch");
+        }
+        else
+        {
+            ErrorMessage.SetActive(true);
+
         }
     }
 

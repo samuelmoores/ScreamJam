@@ -24,8 +24,6 @@ public class BattleMenu : MonoBehaviour
 
     public void Back()
     {
-        Debug.Log("Back");
-
         FightMenu.SetActive(true);
         AttackMenu.SetActive(false);
     }
