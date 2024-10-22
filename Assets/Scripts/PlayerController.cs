@@ -6,7 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     public Transform ItemHolder;
     public Transform throwPoint;
-    public GameObject[] items;
+    public GameObject[] backItems;
+    public GameObject[] throwItems;
+    GameObject currentItem;
+    int itemIndex = 0;
     public enum PlayerState { MOVING, FIGHTING}
     PlayerState state;
     private CharacterController controller;
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
         state = PlayerState.MOVING;
         isThrowing = false;
         throwCoolDown = 2.2f;
+        currentItem = backItems[0];
     }
 
     void Update()
@@ -35,6 +39,27 @@ public class PlayerController : MonoBehaviour
             if (groundedPlayer && playerVelocity.y < 0)
             {
                 playerVelocity.y = -0.1f;
+            }
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                int previousIndex = itemIndex;
+                itemIndex++;
+
+                if(itemIndex > 1)
+                {
+                    backItems[backItems.Length - 1].SetActive(false);
+                    itemIndex = 0;
+                    currentItem = backItems[itemIndex];
+                    backItems[itemIndex].SetActive(true);
+                }
+                else
+                {
+                    backItems[previousIndex].SetActive(false);
+                    currentItem = backItems[itemIndex];
+                    backItems[itemIndex].SetActive(true);
+
+                }
             }
 
             if(Input.GetMouseButtonDown(0) && !isThrowing)
@@ -79,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     public void Throw()
     {
-        GameObject projectile = Instantiate(items[0], throwPoint.position, throwPoint.rotation);
+        GameObject projectile = Instantiate(throwItems[itemIndex], throwPoint.position, throwPoint.rotation);
         projectile.GetComponent<Rigidbody>().AddForce(transform.forward * 15.0f, ForceMode.Impulse);
     }
 
