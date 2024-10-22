@@ -6,6 +6,10 @@ public class PlayerFight : MonoBehaviour
 {
     public enum PlayerFightState { IDLE, ATTACKING, DAMAGED};
     public PlayerFightState state;
+    public GameObject Explosion;
+    public GameObject AttackMenu;
+    public GameObject FightMenu;
+
     Animator animator;
     Enemy enemy;
     float health;
@@ -19,6 +23,8 @@ public class PlayerFight : MonoBehaviour
         GetComponent<PlayerController>().enabled = false;
         attackCooldown = 3.0f;
         enemy = null;
+        AttackMenu.SetActive(false);
+
     }
     private void Update()
     {
@@ -34,8 +40,13 @@ public class PlayerFight : MonoBehaviour
                 // Check if the hit object is tagged as "Enemy"
                 if (hit.collider.CompareTag("Enemy"))
                 {
+                    if (enemy != null)
+                    {
+                        enemy.DeSelect();
+                    }
+
                     // Get the Enemy component from the hit object
-                    Enemy enemy = hit.collider.GetComponent<Enemy>();
+                    enemy = hit.collider.GetComponent<Enemy>();
 
                     // If the enemy is not null, call the SetEnemy function
                     if (enemy != null)
@@ -60,6 +71,7 @@ public class PlayerFight : MonoBehaviour
     public void SetEnemy(Enemy enemyToAttack)
     {
         enemy = enemyToAttack;
+        enemy.Select();
     }
 
     public void OnAttack()
@@ -71,9 +83,17 @@ public class PlayerFight : MonoBehaviour
         }
     }
 
+    public void OpenAttackMenu()
+    {
+        FightMenu.SetActive(false);
+        AttackMenu.SetActive(true);
+
+    }
+
     public void Attack()
     {
         enemy.Damage();
+        Explosion.GetComponent<ParticleSystem>().Play();
         state = PlayerFightState.ATTACKING;
         enemy = null;
     }

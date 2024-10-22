@@ -18,7 +18,7 @@ public class ChaseTimer : MonoBehaviour
     void Start()
     {
         text = GetComponent<TextMeshProUGUI>();
-        timer = 5.0f;
+        timer = 30.0f;
         tryAgain = false;
     }
 

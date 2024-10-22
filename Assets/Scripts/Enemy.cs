@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
     public GameObject item;
     public Transform itemDrop;
+    public GameObject selector;
     Animator animator;
     PlayerFight player;
     GameManager manager;
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         health = 1.0f;
+        DeSelect();
     }
 
     // Update is called once per frame
@@ -36,6 +38,7 @@ public class Enemy : MonoBehaviour
         {
             isStunned = true;
             animator.SetBool("isStunned", true);
+            DeSelect();
         }
         else
         {
@@ -63,5 +66,14 @@ public class Enemy : MonoBehaviour
         Object.Destroy(gameObject);
     }
 
-    
+    public void Select()
+    {
+        selector.SetActive(true);
+    }
+
+    public void DeSelect()
+    {
+        selector.SetActive(false);
+    }
+
 }
